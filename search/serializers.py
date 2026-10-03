@@ -71,10 +71,11 @@ class LandmarkGeoSerializer(GeoFeatureModelSerializer):
 
     
     def get_nearest_streets(self, obj):
+        table = Road._meta.db_table  # "search_road", from the model, not user input
         with connection.cursor() as cursor:
-            cursor.execute("""
+            cursor.execute(f"""
                 SELECT name, ST_DistanceSphere(geom, ST_GeomFromEWKB(%s)) as distance
-                FROM roads
+                FROM {table}
                 WHERE name IS NOT NULL AND name != ''
                 ORDER BY geom <-> ST_GeomFromEWKB(%s)
                 LIMIT 20

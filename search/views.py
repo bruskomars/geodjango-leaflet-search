@@ -1,21 +1,8 @@
-from django.shortcuts import render
-from rest_framework import generics
-from .models import Barangay, Landmark, Road, HouseNumber
-from .serializers import AdminSerializer, LandmarkSerializer, RoadSerializer, AddressSerializer, LandmarkGeoSerializer
-from django.http import Http404
-from rest_framework.exceptions import ParseError
-import time
+from .serializers import AdminSerializer, RoadSerializer, AddressSerializer, LandmarkGeoSerializer
 
 # Landmark Cross Model Search
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.contrib.gis.measure import D
-from django.contrib.gis.db.models.aggregates import Union
-from django.db import connection
-
-# search address import
-from django.contrib.postgres.search import TrigramSimilarity, TrigramWordSimilarity
-from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
 # utils
 from .utils import *
