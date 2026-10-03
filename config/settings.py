@@ -46,10 +46,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     
     'django.contrib.gis',
-   'rest_framework',
-   'rest_framework_gis',
-   'corsheaders',
-   'search',   # your app name
+    'rest_framework',
+    'rest_framework_gis',
+    'corsheaders',
+    'search',   # your app name
+    'django.contrib.postgres',
 ]
 
 MIDDLEWARE = [
