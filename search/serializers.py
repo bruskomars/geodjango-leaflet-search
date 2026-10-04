@@ -28,11 +28,24 @@ class RoadSerializer(GeoFeatureModelSerializer):
     id = serializers.IntegerField(source="src_id", read_only=True)
     name_pf = serializers.CharField(source="prefix_type", read_only=True)
     name_sf = serializers.CharField(source="suffix_type", read_only=True)
+    admin = serializers.SerializerMethodField()
 
     class Meta:
         model = Road
         geo_field = "geom"
-        fields = ["id", "name", "name_pf", "name_sf"]
+        fields = ["id", "name", "name_pf", "name_sf", "admin"]
+        
+    def get_admin(self, obj):
+            admin = Barangay.objects.filter(geom__intersects=obj.geom).first()
+            
+            if not admin:
+                return {"city": None, "barangay": None, "province": None}
+            
+            return {
+                "city" : admin.city, 
+                "barangay" : admin.name, 
+                "province" : admin.region
+            }
 
 
 class AddressSerializer(GeoFeatureModelSerializer):

@@ -124,7 +124,7 @@ def search_landmark(landmark_query, barangay=None, city=None, street=None):
         if barangay:
             brgy_pool = city_admins if city_admins is not None else Barangay.objects.all()
             scored = brgy_pool.annotate(
-                sim=TrigramWordSimilarity(barangay, 'barangay')
+                sim=TrigramWordSimilarity(barangay, 'name')
             ).filter(sim__gte=THRESHOLD)
 
             best_sim = scored.aggregate(m=Max('sim'))['m']

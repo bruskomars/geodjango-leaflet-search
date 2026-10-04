@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{%block title%}My Map{%endblock%}</title>
+
+    {% block css %} {% endblock %}
+
+    
+</head>
+<body>
+
+
+    <!-- <div id="city-search-box">
+        <select id="layer-select">
+            <option value="city">City</option>
+            <option value="landmark">Landmark</option>
+            <option value="road">Road</option>
+        </select>
+        <input type="text" id="layer-search-input" placeholder="Enter name..." />
+        <button id="layer-search-btn">Search</button>
+        <p id="layer-search-error"></p>
+    </div> -->
+
+    <!-- <div id="layer-toggle-box">
+        <button id="roads-wms-toggle-btn">Show Roads (WMS)</button>
+    </div> -->
+
+    <div id="geoserver-layer-panel">
+        <strong>GeoServer Layers</strong>
+    </div>
+
+    <div id="address-search-box">
+        <form id="address-search-form">
+            <input type="text" name="landmark" placeholder="Landmark">
+            <input type="text" name="hn" placeholder="House Address">
+            <input type="text" name="street" placeholder="Street">
+            <input type="text" name="subd" placeholder="Subdivision">
+            <input type="text" name="brgy" placeholder="Barangay">
+            <input type="text" name="city" placeholder="City">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div id="map"></div>
+    {% block content %} {% endblock %}
+    
+    {% block js %} {% endblock %}
+    
+</body>
+</html>

@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'search',   # your app name
     'django.contrib.postgres',
+    
+    'maps_frontend',
 ]
 
 MIDDLEWARE = [
@@ -61,6 +63,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -148,3 +151,8 @@ MAILERS = {
 CORS_ALLOWED_ORIGINS = [
        "http://localhost:8080",
    ]
+
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"},
+}
