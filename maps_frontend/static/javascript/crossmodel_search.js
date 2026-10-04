@@ -1,4 +1,69 @@
 function setupCrossModelSearch(map) {
+  // ---- Symbology: paste at the very top of crossmodel_search.js ----
+  // Colours match the CSS variables in results-theme.css.
+
+  const SYMBOLOGY = {
+    landmark: "#7c3aed",
+    address: "#0f766e",
+    admin: "#2563eb",
+    road: "#f59e0b",
+    highlight: "#ef4444",
+  };
+
+  // Teardrop pin drawn with CSS (.pin in results-theme.css)
+  function pinIcon(kind) {
+    return L.divIcon({
+      className: "pin-wrap",
+      html: `<span class="pin pin--${kind}"><i></i></span>`,
+      iconSize: [28, 34],
+      iconAnchor: [14, 34],
+      popupAnchor: [0, -30],
+    });
+  }
+  const landmarkIcon = pinIcon("landmark");
+  const addressIcon = pinIcon("address");
+
+  // Barangay / city boundaries: light fill, dashed outline
+  const adminStyle = {
+    color: SYMBOLOGY.admin,
+    weight: 2,
+    dashArray: "6 4",
+    fillColor: SYMBOLOGY.admin,
+    fillOpacity: 0.12,
+  };
+
+  // Roads: a white casing drawn under an amber line, so roads stay readable on the basemap
+  const roadCasingStyle = {
+    color: "#ffffff",
+    weight: 9,
+    opacity: 0.95,
+    lineCap: "round",
+    lineJoin: "round",
+  };
+  const roadStyle = {
+    color: SYMBOLOGY.road,
+    weight: 5,
+    opacity: 1,
+    lineCap: "round",
+    lineJoin: "round",
+  };
+
+  // Briefly emphasise a shape when its table row is clicked (markers are skipped)
+  function flashLayer(layer) {
+    if (typeof layer.setStyle !== "function") return;
+    const previous = {
+      color: layer.options.color,
+      weight: layer.options.weight,
+      fillOpacity: layer.options.fillOpacity,
+    };
+    layer.setStyle({
+      color: SYMBOLOGY.highlight,
+      weight: (previous.weight || 3) + 2,
+      fillOpacity: Math.min((previous.fillOpacity || 0) + 0.18, 0.5),
+    });
+    setTimeout(() => layer.setStyle(previous), 1600);
+  }
+
   const form = document.getElementById("address-search-form");
 
   let searchResultsLayer = null;
@@ -208,7 +273,7 @@ function setupCrossModelSearch(map) {
         if (hasLandmarks) {
           const landmarkLayer = L.geoJSON(landmarkGeojson, {
             pointToLayer: function (feature, latlng) {
-              const marker = L.marker(latlng);
+              const marker = L.marker(latlng, { icon: landmarkIcon });
               landmarkLayerRefs.push(marker);
               return marker;
             },
@@ -226,7 +291,7 @@ function setupCrossModelSearch(map) {
         if (hasAddresses) {
           const addressLayer = L.geoJSON(addressGeojson, {
             pointToLayer: function (feature, latlng) {
-              const marker = L.marker(latlng);
+              const marker = L.marker(latlng, { icon: addressIcon });
               addressLayerRefs.push(marker);
               return marker;
             },
@@ -243,14 +308,7 @@ function setupCrossModelSearch(map) {
 
         if (hasAdmin) {
           const adminLayer = L.geoJSON(adminGeojson, {
-            style: function (feature) {
-              return {
-                color: "black",
-                weight: 2,
-                fillColor: "blue",
-                fillOpacity: 0.3,
-              };
-            },
+            style: () => adminStyle,
             onEachFeature: function (feature, layer) {
               const p = feature.properties;
               const popUptext = [p.barangay, p.city].filter(Boolean).join(", ");
@@ -262,13 +320,14 @@ function setupCrossModelSearch(map) {
         }
 
         if (hasRoad) {
+          allLayers.push(
+            L.geoJSON(roadGeojson, {
+              style: () => roadCasingStyle,
+              interactive: false,
+            }),
+          );
           const roadLayer = L.geoJSON(roadGeojson, {
-            style: function (feature) {
-              return {
-                color: "blue",
-                weight: 5,
-              };
-            },
+            style: () => roadStyle,
             onEachFeature: function (feature, layer) {
               const p = feature.properties;
               const popUpText = [p.name_pf, p.name, p.name_sf]
