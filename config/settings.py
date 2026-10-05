@@ -53,6 +53,9 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     
     'maps_frontend',
+    
+    # API DOCS
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -155,4 +158,15 @@ CORS_ALLOWED_ORIGINS = [
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"},
+}
+
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "NCR Layer Search API",
+    "DESCRIPTION": "Search Metro Manila landmarks, streets, house numbers and barangay boundaries.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }

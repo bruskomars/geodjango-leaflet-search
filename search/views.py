@@ -7,9 +7,13 @@ from rest_framework.response import Response
 # utils
 from .utils import *
 
+# api docs
+from .api_docs import search_schema
+
 
 # Create your views here.
 class CrossModelSearchView(APIView):
+    @search_schema
     def get(self, request):
         params = self.request.query_params
         landmark = params.get('landmark')
