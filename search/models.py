@@ -31,3 +31,5 @@ class Landmark(models.Model):
     src_id = models.BigIntegerField(null=True, db_index=True)
     name = models.CharField(max_length=300, null=True, blank=True)
     geom = models.PointField(srid=4326)
+
+from .summary_models import BarangaySummary
