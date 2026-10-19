@@ -9,3 +9,6 @@ def insights(request):
 
 def quality(request):
     return render(request, "maps_frontend/quality.html")
+
+def radius(request):
+    return render(request, "maps_frontend/radius.html")

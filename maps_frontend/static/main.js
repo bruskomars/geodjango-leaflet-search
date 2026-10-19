@@ -29,7 +29,8 @@ function init() {
       const box = L.DomUtil.create("div", "leaflet-bar insights-control");
       box.innerHTML =
         '<a href="/maps/insights/" title="Barangay insights">Barangay insights</a>' +
-        '<a href="/maps/quality/" title="Data quality">Data quality</a>';
+        '<a href="/maps/quality/" title="Data quality">Data quality</a>' +
+        '<a href="/maps/radius/" title="Radius analysis">Radius analysis</a>';
       L.DomEvent.disableClickPropagation(box);
       return box;
     },
