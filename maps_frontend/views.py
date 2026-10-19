@@ -6,3 +6,6 @@ def leaflet_map(request):
 
 def insights(request):
     return render(request, "maps_frontend/insights.html")
+
+def quality(request):
+    return render(request, "maps_frontend/quality.html")

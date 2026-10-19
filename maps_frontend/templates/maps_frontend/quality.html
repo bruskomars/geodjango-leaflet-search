@@ -1,0 +1,81 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NCR Data Quality</title>
+  <style>
+    :root { --ink:#1b2733; --soft:#5b6b7b; --line:#e3e8ee; --wash:#f6f8fa; --accent:#0f766e; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); background: #fff; }
+    header { display: flex; align-items: center; gap: 18px; padding: 0 20px; height: 56px; border-bottom: 1px solid var(--line); }
+    header h1 { margin: 0; font-size: 17px; font-weight: 650; margin-right: auto; }
+    header a { color: var(--accent); text-decoration: none; font-size: 14px; font-weight: 600; }
+    header a:hover { text-decoration: underline; }
+    main { max-width: 1040px; margin: 0 auto; padding: 22px 20px 40px; }
+    #status { min-height: 20px; font-size: 13px; color: var(--soft); margin-bottom: 8px; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .card { padding: 14px 16px; background: var(--wash); border-radius: 12px; }
+    .card b { display: block; font-size: 26px; font-variant-numeric: tabular-nums; }
+    .card span { display: block; font-size: 13px; color: var(--soft); margin-top: 2px; }
+    .card small { display: block; margin-top: 8px; font-size: 13px; }
+    .panels { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 16px; }
+    .panel { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px 16px; }
+    .panel h2 { font-size: 14px; margin: 0 0 2px; }
+    .panel p { font-size: 12.5px; color: var(--soft); margin: 0 0 10px; }
+    .chart-box { position: relative; height: 300px; }
+    .coverage { margin-top: 16px; border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+    .coverage h2 { font-size: 14px; margin: 0 0 8px; }
+    .coverage ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.7; font-variant-numeric: tabular-nums; }
+    .note { margin-top: 16px; padding: 10px 12px; border: 1px solid #f3d9a4; border-radius: 10px; background: #fff8e8; color: #7a4b00; font-size: 12.5px; }
+    .filters { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; margin-bottom: 14px; }
+    .filters label { display: grid; gap: 4px; font-size: 12px; font-weight: 600; color: var(--soft); }
+    .filters select { font: inherit; font-size: 14px; color: var(--ink); padding: 8px 10px; min-width: 220px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+    .filters select:disabled { background: var(--wash); color: #9aa7b4; }
+    .filters select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+    #scope { font-size: 13px; color: var(--soft); padding-bottom: 9px; }
+    #repeat-empty { margin: 8px 0 0; }
+    @media (max-width: 520px) { .panels { grid-template-columns: 1fr; } .filters select { min-width: 100%; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>NCR Data Quality</h1>
+    <a href="/maps/">Search map</a>
+    <a href="/maps/insights/">Barangay insights</a>
+  </header>
+  <main>
+    <div class="filters">
+      <label>City
+        <select id="city"><option value="">Whole database</option></select>
+      </label>
+      <label>Barangay
+        <select id="barangay" disabled><option value="">All barangays</option></select>
+      </label>
+      <span id="scope"></span>
+    </div>
+    <div id="status" role="status" aria-live="polite"></div>
+    <div class="cards" id="cards"></div>
+    <div class="panels">
+      <section class="panel">
+        <h2>Missing values</h2>
+        <p>Share of records with an empty field, by field.</p>
+        <div class="chart-box"><canvas id="missing-chart" aria-label="Bar chart of missing values by field"></canvas></div>
+      </section>
+      <section class="panel">
+        <h2>Most repeated landmark names</h2>
+        <p>Names that appear on several landmarks (chains and branches, or duplicates).</p>
+        <div class="chart-box"><canvas id="repeat-chart" aria-label="Bar chart of the most repeated landmark names"></canvas></div>
+        <p id="repeat-empty"></p>
+      </section>
+    </div>
+    <section class="coverage">
+      <h2>Coverage by barangay</h2>
+      <ul id="coverage"></ul>
+    </section>
+    <p class="note" id="note"></p>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="{% static 'javascript/quality.js' %}"></script>
+</body>
+</html>
