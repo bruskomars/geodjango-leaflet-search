@@ -7,4 +7,5 @@ urlpatterns = [
     path("insights/", views.insights, name="insights"),
     path("quality/", views.quality, name="quality"),
     path("radius/", views.radius, name="radius"),
+    path("density/", views.density, name="density"),
 ]

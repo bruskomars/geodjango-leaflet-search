@@ -12,3 +12,6 @@ def quality(request):
 
 def radius(request):
     return render(request, "maps_frontend/radius.html")
+
+def density(request):
+    return render(request, "maps_frontend/density.html")
