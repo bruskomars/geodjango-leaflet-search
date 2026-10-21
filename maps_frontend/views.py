@@ -18,3 +18,6 @@ def density(request):
 
 def clusters(request):
     return render(request, "maps_frontend/clusters.html")
+
+def names(request):
+    return render(request, "maps_frontend/names.html")

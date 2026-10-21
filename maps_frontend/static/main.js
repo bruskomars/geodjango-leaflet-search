@@ -32,7 +32,8 @@ function init() {
         '<a href="/maps/quality/" title="Data quality">Data quality</a>' +
         '<a href="/maps/radius/" title="Radius analysis">Radius analysis</a>' +
         '<a href="/maps/density/" title="Density grid">Density grid</a>' +
-        '<a href="/maps/clusters/" title="Hotspot clusters">Hotspot clusters</a>';
+        '<a href="/maps/clusters/" title="Hotspot clusters">Hotspot clusters</a>' +
+        '<a href="/maps/names/" title="Landmark names">Landmark names</a>';
       L.DomEvent.disableClickPropagation(box);
       return box;
     },

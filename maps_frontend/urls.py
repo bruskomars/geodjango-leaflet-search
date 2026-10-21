@@ -9,4 +9,5 @@ urlpatterns = [
     path("radius/", views.radius, name="radius"),
     path("density/", views.density, name="density"),
     path("clusters/", views.clusters, name="clusters"),
+    path("names/", views.names, name="names"),
 ]
