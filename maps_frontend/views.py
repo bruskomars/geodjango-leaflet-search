@@ -15,3 +15,6 @@ def radius(request):
 
 def density(request):
     return render(request, "maps_frontend/density.html")
+
+def clusters(request):
+    return render(request, "maps_frontend/clusters.html")

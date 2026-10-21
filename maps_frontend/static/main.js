@@ -31,7 +31,8 @@ function init() {
         '<a href="/maps/insights/" title="Barangay insights">Barangay insights</a>' +
         '<a href="/maps/quality/" title="Data quality">Data quality</a>' +
         '<a href="/maps/radius/" title="Radius analysis">Radius analysis</a>' +
-        '<a href="/maps/density/" title="Density grid">Density grid</a>';
+        '<a href="/maps/density/" title="Density grid">Density grid</a>' +
+        '<a href="/maps/clusters/" title="Hotspot clusters">Hotspot clusters</a>';
       L.DomEvent.disableClickPropagation(box);
       return box;
     },

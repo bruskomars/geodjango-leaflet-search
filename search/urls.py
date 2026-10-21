@@ -4,6 +4,7 @@ from .analysis import BarangaySummaryView
 from .quality import DataQualityView, AreasView
 from .radius import RadiusAnalysisView
 from .hexgrid import HexGridView
+from .clusters import ClustersView
 
 urlpatterns = [
     path("search/", views.CrossModelSearchView.as_view(), name="cross-model-search"),
@@ -12,4 +13,5 @@ urlpatterns = [
     path("analysis/areas/", AreasView.as_view(), name="analysis-areas"),
     path("analysis/radius/", RadiusAnalysisView.as_view(), name="radius-analysis"),
     path("analysis/hexgrid/", HexGridView.as_view(), name="hexgrid"),
+    path("analysis/clusters/", ClustersView.as_view(), name="clusters"),
 ]
