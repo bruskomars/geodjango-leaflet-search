@@ -10,4 +10,5 @@ urlpatterns = [
     path("density/", views.density, name="density"),
     path("clusters/", views.clusters, name="clusters"),
     path("names/", views.names, name="names"),
+    path("roads/", views.roads, name="roads"),
 ]

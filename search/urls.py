@@ -1,6 +1,7 @@
 from django.urls import path
 
 from search.names import NamePointsView, NameSummaryView
+from search.roadstats import RoadGeometryView
 from . import views
 from .analysis import BarangaySummaryView
 from .quality import DataQualityView, AreasView
@@ -8,6 +9,7 @@ from .radius import RadiusAnalysisView
 from .hexgrid import HexGridView
 from .clusters import ClustersView
 from .names import NameSummaryView, NamePointsView
+from .roadstats import RoadSummaryView, RoadGeometryView
 
 urlpatterns = [
     path("search/", views.CrossModelSearchView.as_view(), name="cross-model-search"),
@@ -19,4 +21,6 @@ urlpatterns = [
     path("analysis/clusters/", ClustersView.as_view(), name="clusters"),
     path("analysis/names/", NameSummaryView.as_view(), name="name-summary"),
     path("analysis/names/points/", NamePointsView.as_view(), name="name-points"),
+    path("analysis/roads/", RoadSummaryView.as_view(), name="road-summary"),
+path("analysis/roads/geometry/", RoadGeometryView.as_view(), name="road-geometry"),
 ]

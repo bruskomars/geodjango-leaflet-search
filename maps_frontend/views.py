@@ -21,3 +21,6 @@ def clusters(request):
 
 def names(request):
     return render(request, "maps_frontend/names.html")
+
+def roads(request):
+    return render(request, "maps_frontend/roads.html")
