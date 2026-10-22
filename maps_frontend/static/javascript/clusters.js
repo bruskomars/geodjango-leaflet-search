@@ -9,11 +9,17 @@
   const $ = (id) => document.getElementById(id);
 
   const map = L.map("map").setView([14.5995, 121.0], 11);
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    referrerPolicy: "no-referrer-when-downgrade",
-    attribution: "&copy; OpenStreetMap contributors",
-  }).addTo(map);
+  L.tileLayer(
+    "https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.{ext}",
+    {
+      minZoom: 0,
+      maxZoom: 18,
+      referrerPolicy: "no-referrer-when-downgrade",
+      attribution:
+        '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      ext: "png",
+    },
+  ).addTo(map);
 
   let clusterLayer = null;
   let hoverOutline = null;

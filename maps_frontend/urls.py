@@ -11,4 +11,5 @@ urlpatterns = [
     path("clusters/", views.clusters, name="clusters"),
     path("names/", views.names, name="names"),
     path("roads/", views.roads, name="roads"),
+    path("consistency/", views.consistency, name="consistency"),
 ]

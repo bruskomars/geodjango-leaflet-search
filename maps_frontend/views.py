@@ -24,3 +24,6 @@ def names(request):
 
 def roads(request):
     return render(request, "maps_frontend/roads.html")
+
+def consistency(request):
+    return render(request, "maps_frontend/consistency.html")

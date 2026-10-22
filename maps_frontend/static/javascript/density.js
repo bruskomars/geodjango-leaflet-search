@@ -9,11 +9,15 @@
   const $ = (id) => document.getElementById(id);
 
   const map = L.map("map").setView([14.5995, 121.0], 11);
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    referrerPolicy: "no-referrer-when-downgrade",
-    attribution: "&copy; OpenStreetMap contributors",
-  }).addTo(map);
+  L.tileLayer(
+    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+    {
+      maxZoom: 19,
+      referrerPolicy: "no-referrer-when-downgrade",
+      attribution:
+        "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community",
+    },
+  ).addTo(map);
 
   let hexLayer = null;
   let hoverOutline = null;
