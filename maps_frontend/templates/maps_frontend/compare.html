@@ -1,0 +1,91 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NCR Compare Areas</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+  <style>
+    :root { --ink:#1b2733; --soft:#5b6b7b; --line:#e3e8ee; --wash:#f6f8fa; --accent:#0f766e; --a:#2563eb; --b:#ea580c; }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body { display: flex; flex-direction: column; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); background: #fff; }
+    header { display: flex; align-items: center; gap: 18px; padding: 0 20px; height: 56px; border-bottom: 1px solid var(--line); flex: none; flex-wrap: wrap; }
+    header h1 { margin: 0; font-size: 17px; font-weight: 650; margin-right: auto; }
+    header a { color: var(--accent); text-decoration: none; font-size: 14px; font-weight: 600; }
+    header a:hover { text-decoration: underline; }
+    main { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 440px; }
+    #map { height: 100%; min-height: 320px; background: #dfe6ec; }
+    aside { overflow-y: auto; padding: 18px 20px 24px; border-left: 1px solid var(--line); }
+    .pickers { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 8px; }
+    fieldset { border: 0; border-top: 4px solid var(--c); padding: 8px 0 0; margin: 0; display: grid; gap: 8px; min-width: 0; }
+    fieldset.a { --c: var(--a); } fieldset.b { --c: var(--b); }
+    legend { font-size: 13px; font-weight: 700; padding: 0; color: var(--c); }
+    label { display: grid; gap: 3px; font-size: 12px; font-weight: 600; color: var(--soft); }
+    select { font: inherit; font-size: 13px; color: var(--ink); padding: 7px 8px; border: 1px solid var(--line); border-radius: 8px; background: #fff; width: 100%; }
+    select:disabled { background: var(--wash); color: #9aa7b4; }
+    select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+    #status { font-size: 13px; color: var(--soft); min-height: 18px; margin: 6px 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+    th, td { padding: 7px 6px; border-bottom: 1px solid #eef1f5; text-align: right; }
+    th:first-child, td:first-child { text-align: left; color: var(--soft); font-weight: 500; }
+    thead th { font-size: 12px; border-bottom: 2px solid var(--line); }
+    thead th.a { color: var(--a); } thead th.b { color: var(--b); }
+    td.win { font-weight: 700; color: var(--ink); }
+    h2 { font-size: 14px; margin: 18px 0 4px; }
+    .help { font-size: 12.5px; color: var(--soft); margin: 0 0 8px; line-height: 1.4; }
+    .chart-box { position: relative; height: 340px; }
+    .note { margin-top: 16px; padding: 10px 12px; border: 1px solid #f3d9a4; border-radius: 10px; background: #fff8e8; color: #7a4b00; font-size: 12.5px; line-height: 1.4; }
+    .leaflet-container path.leaflet-interactive:focus { outline: none; }
+    @media (max-width: 900px) {
+      main { grid-template-columns: 1fr; grid-template-rows: 50vh auto; overflow-y: auto; }
+      aside { border-left: 0; border-top: 1px solid var(--line); overflow: visible; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>NCR Compare Areas</h1>
+    <a href="/maps/">Search map</a>
+    <a href="/maps/insights/">Barangay insights</a>
+    <a href="/maps/quality/">Data quality</a>
+    <a href="/maps/radius/">Radius analysis</a>
+    <a href="/maps/density/">Density grid</a>
+    <a href="/maps/clusters/">Hotspot clusters</a>
+    <a href="/maps/names/">Landmark names</a>
+    <a href="/maps/roads/">Road network</a>
+    <a href="/maps/consistency/">Address consistency</a>
+  </header>
+  <main>
+    <div id="map" aria-label="Map showing the two selected areas"></div>
+    <aside>
+      <div class="pickers">
+        <fieldset class="a"><legend>Area A</legend>
+          <label>City<select id="a-city"><option value="">Choose a city</option></select></label>
+          <label>Barangay<select id="a-barangay" disabled><option value="">Whole city</option></select></label>
+        </fieldset>
+        <fieldset class="b"><legend>Area B</legend>
+          <label>City<select id="b-city"><option value="">Choose a city</option></select></label>
+          <label>Barangay<select id="b-barangay" disabled><option value="">Whole city</option></select></label>
+        </fieldset>
+      </div>
+      <div id="status" role="status" aria-live="polite">Choose a city for each area to compare them.</div>
+      <div id="result" hidden>
+        <table>
+          <thead><tr><th></th><th class="a" id="th-a"></th><th class="b" id="th-b"></th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <h2>Landmark categories per km²</h2>
+        <p class="help">Per square kilometre, so a large area is not favoured over a small one.</p>
+        <div class="chart-box"><canvas id="chart" aria-label="Grouped bar chart of landmark categories per km² for both areas"></canvas></div>
+      </div>
+      <p class="note" id="note"></p>
+    </aside>
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="{% static 'javascript/compare.js' %}"></script>
+</body>
+</html>

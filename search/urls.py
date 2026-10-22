@@ -12,6 +12,7 @@ from .clusters import ClustersView
 from .names import NameSummaryView, NamePointsView
 from .roadstats import RoadSummaryView, RoadGeometryView
 from .consistency import ConsistencyView
+from .compare import CompareView
 
 urlpatterns = [
     path("search/", views.CrossModelSearchView.as_view(), name="cross-model-search"),
@@ -26,4 +27,5 @@ urlpatterns = [
     path("analysis/roads/", RoadSummaryView.as_view(), name="road-summary"),
     path("analysis/roads/geometry/", RoadGeometryView.as_view(), name="road-geometry"),
     path("analysis/consistency/", ConsistencyView.as_view(), name="consistency"),
+    path("analysis/compare/", CompareView.as_view(), name="compare"),
 ]

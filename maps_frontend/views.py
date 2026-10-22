@@ -27,3 +27,6 @@ def roads(request):
 
 def consistency(request):
     return render(request, "maps_frontend/consistency.html")
+
+def compare(request):
+    return render(request, "maps_frontend/compare.html")

@@ -12,4 +12,5 @@ urlpatterns = [
     path("names/", views.names, name="names"),
     path("roads/", views.roads, name="roads"),
     path("consistency/", views.consistency, name="consistency"),
+    path("compare/", views.compare, name="compare"),
 ]

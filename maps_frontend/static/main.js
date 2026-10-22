@@ -35,7 +35,8 @@ function init() {
         '<a href="/maps/clusters/" title="Hotspot clusters">Hotspot clusters</a>' +
         '<a href="/maps/names/" title="Landmark names">Landmark names</a>' +
         '<a href="/maps/roads/" title="Road network">Road network</a>' +
-        '<a href="/maps/consistency/" title="Address consistency">Address consistency</a>';
+        '<a href="/maps/consistency/" title="Address consistency">Address consistency</a>' +
+        '<a href="/maps/compare/" title="Compare areas">Compare areas</a>';
       L.DomEvent.disableClickPropagation(box);
       return box;
     },
